@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from .models import SubjectSet, Student
 from ..question.models import Question
 from ..answer.models import Answer
 from ..subjects.models import Subjects
@@ -51,3 +53,15 @@ class SubjectWithQuestionsSerializer(serializers.ModelSerializer):
     def get_questions(self, subject):
         questions = subject.questions.all().prefetch_related('answers')
         return QuestionWithAnswersSerializer(questions, many=True, context=self.context).data
+
+
+class SubjectSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubjectSet
+        fields = '__all__'
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = "__all__"
