@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import SubjectSet, Student
+from .models import SubjectSet
 from ..question.models import Question
 from ..answer.models import Answer
 from ..subjects.models import Subjects
@@ -60,8 +60,3 @@ class SubjectSetSerializer(serializers.ModelSerializer):
         model = SubjectSet
         fields = '__all__'
 
-
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = "__all__"

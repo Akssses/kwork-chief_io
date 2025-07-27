@@ -22,7 +22,7 @@ media
 
 # C extensions
 *.so
-
+.images
 # Distribution / packaging
 .Python
 build/
@@ -173,4 +173,3 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
 
-.images

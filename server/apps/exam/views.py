@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import SubjectSet
-from .serializers import SubjectWithQuestionsSerializer, SubjectSetSerializer, StudentSerializer
+from .serializers import SubjectWithQuestionsSerializer, SubjectSetSerializer
 
 
 class QuestionsBySubjectSetAPIView(APIView):
@@ -28,14 +28,3 @@ class QuestionsBySubjectSetAPIView(APIView):
 class SubjectSetListAPIView(ListAPIView):
     queryset = SubjectSet.objects.all()
     serializer_class = SubjectSetSerializer
-
-
-class StudentCreateAPIView(APIView):
-    serializer_class = StudentSerializer
-
-    def post(self, request):
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
