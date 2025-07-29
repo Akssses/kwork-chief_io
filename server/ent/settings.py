@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.question.apps.QuestionConfig',
     'apps.answer.apps.AnswerConfig',
     'apps.exam.apps.ExamConfig',
+    'apps.student_result.apps.StudentResultConfig',
 ]
 
 MIDDLEWARE = [
