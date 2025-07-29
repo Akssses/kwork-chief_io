@@ -6,31 +6,32 @@ import { FaUser } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
+import useSubject from "@/hooks/useSubject"; // проверь путь
 
 export default function AuthForm() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [direction, setDirection] = useState("");
+  const [direction, setDirection] = useState(""); // title
+  const [directionId, setDirectionId] = useState(null); // id из API
   const [agree, setAgree] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const directions = [
-    "Математика + Физика",
-    "Математика + Информатика",
-    "Математика + География",
-    "Химия + Биология",
-    "География + Биология",
-    "Химия + Физика",
-    "Всемирная история + Человек. Общество. Право",
-    "Всемирная история + Английский язык",
-    "Всемирная история + География",
-  ];
+  const { items: subjectSets, loading, error } = useSubject();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agree) return alert("Вы должны согласиться с условиями");
-    console.log({ name, phone, email, direction });
+
+    console.log({
+      name,
+      phone,
+      email,
+      directionId,
+      directionTitle: direction,
+    });
+
+    // тут дальше твоя отправка на сервер
   };
 
   return (
@@ -87,29 +88,45 @@ export default function AuthForm() {
 
         <div className={s.napravlenie}>
           <h2>Выберите направление:</h2>
+
           <div className={s.dropdownWrapper}>
             <div
               className={s.dropdownHeader}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onClick={() => !loading && setIsDropdownOpen(!isDropdownOpen)}
+              aria-disabled={loading}
             >
-              {direction || "Направление"}
+              {direction || (loading ? "Загрузка..." : "Направление")}
               <span>
                 <IoIosArrowDown />
               </span>
             </div>
+
             {isDropdownOpen && (
               <ul className={s.dropdownList}>
-                {directions.map((item) => (
-                  <li
-                    key={item}
-                    onClick={() => {
-                      setDirection(item);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {item}
+                {error && (
+                  <li className={s.errorItem}>
+                    Не удалось загрузить направления
                   </li>
-                ))}
+                )}
+
+                {!error && !loading && subjectSets.length === 0 && (
+                  <li className={s.emptyItem}>Пусто</li>
+                )}
+
+                {!error &&
+                  !loading &&
+                  subjectSets.map((item) => (
+                    <li
+                      key={item.id}
+                      onClick={() => {
+                        setDirection(item.title);
+                        setDirectionId(item.id);
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      {item.title}
+                    </li>
+                  ))}
               </ul>
             )}
           </div>
@@ -126,7 +143,7 @@ export default function AuthForm() {
           </label>
         </div>
 
-        <button type="submit" className={s.button}>
+        <button type="submit" className={s.button} disabled={loading}>
           Приступить
         </button>
       </form>

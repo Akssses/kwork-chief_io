@@ -6,9 +6,9 @@ import Image from "next/image";
 export default function Home() {
   return (
     <main className="container">
-      {/* <AuthForm /> */}
+      <AuthForm />
       {/* <TestFrom /> */}
-      <ThankYouScreen />
+      {/* <ThankYouScreen /> */}
     </main>
   );
 }
