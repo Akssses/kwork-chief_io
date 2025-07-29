@@ -1,9 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import s from "./ThankYouScreen.module.scss";
 
 export default function ThankYouScreen() {
+  const handleBack = () => {
+    // полный перезагруз страницы и переход на главную
+    window.location.href = "/";
+  };
+
   return (
     <div className={s.card}>
       <img
@@ -19,9 +23,10 @@ export default function ThankYouScreen() {
             <br />
             за честность!
           </h1>
-          <Link href={"/"}>
-            <button className={s.button}>Назад на главную</button>
-          </Link>
+
+          <button className={s.button} onClick={handleBack}>
+            Назад на главную
+          </button>
         </div>
 
         <div className={s.character}>

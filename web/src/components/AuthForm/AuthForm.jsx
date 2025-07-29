@@ -6,17 +6,17 @@ import { FaUser } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
-import useSubject from "@/hooks/useSubject";
+import useSubject from "@/hooks/useSubject"; // проверь путь
 
-export default function AuthForm({ onStart }) {
-  const [name, setName] = useState("");
+export default function AuthForm({ onStart = () => {} }) {
+  const [studentName, setStudentName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [direction, setDirection] = useState("");
+  const [parentName, setParentName] = useState("");
+  const [directionTitle, setDirectionTitle] = useState("");
   const [directionId, setDirectionId] = useState(null);
   const [agree, setAgree] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [testLang, setTestLang] = useState("ru");
+  const [testLang, setTestLang] = useState("ru"); // ru | kz
 
   const { items: subjectSets, loading, error } = useSubject();
 
@@ -25,16 +25,14 @@ export default function AuthForm({ onStart }) {
     if (!agree) return alert("Вы должны согласиться с условиями");
     if (!directionId) return alert("Выберите направление");
 
-    const payload = {
-      name,
-      phone,
-      email,
-      directionId,
-      directionTitle: direction,
-      testLanguage: testLang,
-    };
-
-    onStart?.(payload);
+    onStart({
+      name: studentName, // student_name
+      phone, // phone_number
+      parentName, // parent_name
+      directionId, // для загрузки вопросов
+      directionTitle, // например "Математика + Физика"
+      testLanguage: testLang, // "ru" | "kz"
+    });
   };
 
   return (
@@ -58,9 +56,10 @@ export default function AuthForm({ onStart }) {
             </span>
             <input
               type="text"
-              placeholder="Ваше имя"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Ваше имя (ученика)"
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
+              required
             />
           </div>
 
@@ -73,6 +72,7 @@ export default function AuthForm({ onStart }) {
               placeholder="Ваш телефон"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              required
             />
           </div>
 
@@ -83,8 +83,9 @@ export default function AuthForm({ onStart }) {
             <input
               type="text"
               placeholder="ФИО Родителя"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={parentName}
+              onChange={(e) => setParentName(e.target.value)}
+              required
             />
           </div>
         </div>
@@ -98,7 +99,7 @@ export default function AuthForm({ onStart }) {
               onClick={() => !loading && setIsDropdownOpen(!isDropdownOpen)}
               aria-disabled={loading}
             >
-              {direction || (loading ? "Загрузка..." : "Направление")}
+              {directionTitle || (loading ? "Загрузка..." : "Направление")}
               <span>
                 <IoIosArrowDown />
               </span>
@@ -120,7 +121,7 @@ export default function AuthForm({ onStart }) {
                     <li
                       key={item.id}
                       onClick={() => {
-                        setDirection(item.title);
+                        setDirectionTitle(item.title);
                         setDirectionId(item.id);
                         setIsDropdownOpen(false);
                       }}

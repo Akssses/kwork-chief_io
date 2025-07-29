@@ -4,43 +4,113 @@ import { useMemo, useState } from "react";
 import s from "./TestFom.module.scss";
 import useQuestions from "@/hooks/useQuestions";
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 export default function TestFrom({
-  subjectSetId = 1,
+  subjectSetId,
   lang = "ru",
-  onFinish, // опционально: что делать после отправки
+  directionTitle,
+  user,
+  onFinish,
 }) {
   const {
     data: subjects,
     loading,
     error,
   } = useQuestions({ subjectSetId, lang });
-
-  const [chosen, setChosen] = useState({});
+  const [chosen, setChosen] = useState({}); // { [questionId]: answerId }
 
   const allQuestions = useMemo(
-    () => subjects.flatMap((subj) => subj.questions || []),
+    () => subjects.flatMap((s) => s.questions || []),
     [subjects]
   );
 
-  const handleChoose = (qId, aId) => {
+  const handleChoose = (qId, aId) =>
     setChosen((prev) => ({ ...prev, [qId]: aId }));
+
+  // посчитать кол-во правильных по конкретному предмету
+  const correctBySubjectTitle = (title) => {
+    const subj = subjects.find(
+      (s) => s.title.toLowerCase() === title.toLowerCase()
+    );
+    if (!subj || !subj.questions) return 0;
+    let cnt = 0;
+    subj.questions.forEach((q) => {
+      const picked = chosen[q.id];
+      const ans = (q.answers || []).find((a) => a.id === picked);
+      if (ans?.is_correct) cnt += 1;
+    });
+    return cnt;
   };
 
-  const handleSubmit = (e) => {
+  // универсально ищем счёт по маске названия
+  const scoreByPattern = (regex) => {
+    let sum = 0;
+    subjects.forEach((s) => {
+      if (regex.test(s.title)) sum += correctBySubjectTitle(s.title);
+    });
+    return sum;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const answers = Object.entries(chosen).map(([question_id, answer_id]) => ({
-      question_id: Number(question_id),
-      answer_id: Number(answer_id),
-    }));
+    // 1) распарсим из направления два проф. предмета
+    const [prof1 = "", prof2 = ""] = (directionTitle || "").split(/\s*\+\s*/);
 
+    // 2) считаем баллы
+    const profile_subject_1_score = prof1 ? correctBySubjectTitle(prof1) : 0;
+    const profile_subject_2_score = prof2 ? correctBySubjectTitle(prof2) : 0;
+
+    const history_score = scoreByPattern(/истори/i); // "Всемирная история" и т.п.
+    const math_literacy_score = scoreByPattern(/математическ.*грамот/i); // "Математическая грамотность"
+    const reading_literacy_score = scoreByPattern(/читател|reading/i); // "Читательская грамотность"
+
+    const score =
+      history_score +
+      math_literacy_score +
+      reading_literacy_score +
+      profile_subject_1_score +
+      profile_subject_2_score;
+
+    // 3) собираем payload под API student_result/create/
     const payload = {
-      subject_set_id: subjectSetId,
-      lang,
-      answers,
+      parent_name: user?.parentName || "",
+      student_name: user?.name || "",
+      phone_number: user?.phone || "",
+      language: lang, // "ru" | "kz"
+      history_score,
+      math_literacy_score,
+      reading_literacy_score,
+      profile_subject_1_name: prof1 || "",
+      profile_subject_1_score,
+      profile_subject_2_name: prof2 || "",
+      profile_subject_2_score,
+      direction: directionTitle || "",
+      score,
     };
 
-    if (typeof onFinish === "function") onFinish(payload);
+    try {
+      const res = await fetch(`${BASE_URL}/api/v1/student_result/create/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const txt = await res.text().catch(() => "");
+        throw new Error(`HTTP ${res.status}: ${txt}`);
+      }
+
+      console.log("RESULT SENT:", payload);
+      onFinish?.(payload);
+    } catch (err) {
+      alert(`Не удалось отправить результат: ${err.message}`);
+      console.error(err);
+    }
   };
 
   return (
@@ -76,12 +146,12 @@ export default function TestFrom({
                   </div>
                 )}
 
-                {(subject.questions || []).map((q, i) => (
+                {(subject.questions || []).map((q) => (
                   <div key={q.id} className={s.test}>
                     <div className={s.question}>
                       <p
                         dangerouslySetInnerHTML={{
-                          __html: q.text?.replace(/\r?\n/g, "<br/>") || "",
+                          __html: (q.text || "").replace(/\r?\n/g, "<br/>"),
                         }}
                       />
                       {q.image && (

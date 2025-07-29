@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import AuthForm from "@/components/AuthForm/AuthForm";
 import TestFrom from "@/components/TestFrom/TestFrom";
@@ -10,19 +9,27 @@ export default function Home() {
   const [ctx, setCtx] = useState({
     subjectSetId: null,
     lang: "ru",
-    user: { name: "", phone: "", email: "" },
+    directionTitle: "",
+    user: { name: "", phone: "", parentName: "" },
   });
 
   return (
     <main className="container">
       {step === "auth" && (
         <AuthForm
-          onStart={({ name, phone, email, directionId, testLanguage }) => {
-            if (!directionId) return;
+          onStart={({
+            name,
+            phone,
+            parentName,
+            directionId,
+            directionTitle,
+            testLanguage,
+          }) => {
             setCtx({
               subjectSetId: directionId,
               lang: testLanguage,
-              user: { name, phone, email },
+              directionTitle,
+              user: { name, phone, parentName },
             });
             setStep("test");
           }}
@@ -33,6 +40,8 @@ export default function Home() {
         <TestFrom
           subjectSetId={ctx.subjectSetId}
           lang={ctx.lang}
+          directionTitle={ctx.directionTitle}
+          user={ctx.user}
           onFinish={() => setStep("thanks")}
         />
       )}
