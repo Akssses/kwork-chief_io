@@ -10,6 +10,12 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .card {
+    margin: 20px 0;
+  }
+}
+
 .logo {
   position: absolute;
   top: 24px;
@@ -41,6 +47,8 @@
 
     @media (max-width: 768px) {
       text-align: center;
+      font-size: 48px;
+      margin-top: 50px;
     }
   }
 

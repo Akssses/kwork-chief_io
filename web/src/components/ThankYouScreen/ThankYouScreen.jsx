@@ -4,7 +4,6 @@ import s from "./ThankYouScreen.module.scss";
 
 export default function ThankYouScreen() {
   const handleBack = () => {
-    // полный перезагруз страницы и переход на главную
     window.location.href = "/";
   };
 

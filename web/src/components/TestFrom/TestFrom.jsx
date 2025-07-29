@@ -18,7 +18,7 @@ export default function TestFrom({
     loading,
     error,
   } = useQuestions({ subjectSetId, lang });
-  const [chosen, setChosen] = useState({}); // { [questionId]: answerId }
+  const [chosen, setChosen] = useState({});
 
   const allQuestions = useMemo(
     () => subjects.flatMap((s) => s.questions || []),
@@ -28,7 +28,6 @@ export default function TestFrom({
   const handleChoose = (qId, aId) =>
     setChosen((prev) => ({ ...prev, [qId]: aId }));
 
-  // посчитать кол-во правильных по конкретному предмету
   const correctBySubjectTitle = (title) => {
     const subj = subjects.find(
       (s) => s.title.toLowerCase() === title.toLowerCase()
@@ -43,7 +42,6 @@ export default function TestFrom({
     return cnt;
   };
 
-  // универсально ищем счёт по маске названия
   const scoreByPattern = (regex) => {
     let sum = 0;
     subjects.forEach((s) => {
@@ -55,10 +53,8 @@ export default function TestFrom({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1) распарсим из направления два проф. предмета
     const [prof1 = "", prof2 = ""] = (directionTitle || "").split(/\s*\+\s*/);
 
-    // 2) считаем баллы
     const profile_subject_1_score = prof1 ? correctBySubjectTitle(prof1) : 0;
     const profile_subject_2_score = prof2 ? correctBySubjectTitle(prof2) : 0;
 
@@ -73,7 +69,6 @@ export default function TestFrom({
       profile_subject_1_score +
       profile_subject_2_score;
 
-    // 3) собираем payload под API student_result/create/
     const payload = {
       parent_name: user?.parentName || "",
       student_name: user?.name || "",

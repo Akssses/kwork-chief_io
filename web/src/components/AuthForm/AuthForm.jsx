@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
-import useSubject from "@/hooks/useSubject"; // проверь путь
+import useSubject from "@/hooks/useSubject";
 
 export default function AuthForm({ onStart = () => {} }) {
   const [studentName, setStudentName] = useState("");
@@ -16,7 +16,7 @@ export default function AuthForm({ onStart = () => {} }) {
   const [directionId, setDirectionId] = useState(null);
   const [agree, setAgree] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [testLang, setTestLang] = useState("ru"); // ru | kz
+  const [testLang, setTestLang] = useState("ru");
 
   const { items: subjectSets, loading, error } = useSubject();
 

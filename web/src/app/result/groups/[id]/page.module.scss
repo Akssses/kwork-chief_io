@@ -171,3 +171,71 @@ $radius: 40px;
     }
   }
 }
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 20px 12px;
+  }
+
+  .card {
+    border-width: 6px;
+    border-radius: 24px;
+  }
+
+  .hero {
+    padding: 20px;
+    text-align: center;
+    gap: 20px;
+
+    .heroLeft {
+      align-items: center;
+      gap: 16px;
+    }
+
+    .heroTitle {
+      font-size: 26px;
+    }
+
+    .heroSubtitle {
+      font-size: 14px;
+    }
+
+    .heroCharacter {
+      width: 140px;
+    }
+
+    .logo {
+      width: 90px;
+    }
+  }
+
+  .body {
+    padding: 20px 14px;
+  }
+
+  .sectionTitle {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .whiteBoxes {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .whiteBox {
+    padding: 20px;
+    margin-bottom: 0;
+  }
+
+  .whiteBoxTitle {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .whiteBoxText {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-top: 14px;
+  }
+}

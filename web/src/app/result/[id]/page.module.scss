@@ -255,3 +255,69 @@ $radius: 20px;
   font-weight: 700;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 12px 12px 60px;
+    gap: 16px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 20px;
+
+    .heroCharacter {
+      width: 160px;
+      margin: 0 auto;
+    }
+
+    .heroLeft {
+      align-items: center;
+      gap: 20px;
+    }
+
+    .heroTitle {
+      font-size: 26px;
+    }
+
+    .heroSubtitle {
+      font-size: 15px;
+    }
+  }
+
+  .hello {
+    font-size: 22px;
+    text-align: center;
+
+    span {
+      display: block;
+      margin-bottom: 4px;
+    }
+  }
+
+  .infoRow {
+    grid-template-columns: 1fr;
+  }
+
+  .resultBox {
+    .resultValue {
+      font-size: 38px;
+    }
+  }
+
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .profileGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pdf_button {
+    width: 100%;
+    font-size: 18px;
+    padding: 16px;
+    border-radius: 16px;
+  }
+}

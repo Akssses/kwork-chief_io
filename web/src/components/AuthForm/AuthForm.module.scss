@@ -270,3 +270,177 @@
     background: #ebf4ff;
   }
 }
+
+/* ====== планшет: ужимаем сетку, шрифты, отступы ====== */
+@media (max-width: 1024px) {
+  .container {
+    max-width: 920px;
+    border-radius: 32px;
+  }
+
+  .left {
+    padding: 28px;
+    h1 {
+      font-size: 32px;
+    }
+    p {
+      font-size: 18px;
+    }
+    .logo {
+      width: 84px;
+    }
+  }
+
+  .right {
+    padding: 28px;
+  }
+
+  .dropdownList {
+    max-height: 280px;
+  }
+}
+
+/* ====== мобилка: колонки в столбик, 100% ширина, крупные тап‑таргеты ====== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column; /* левая колонка сверху */
+    border-width: 10px;
+    border-radius: 28px;
+    margin: 20px;
+  }
+
+  .left {
+    padding: 22px 16px;
+    text-align: center;
+
+    .logo {
+      width: 80px;
+    }
+
+    h1 {
+      font-size: 26px;
+      line-height: 1.3;
+      margin-top: 14px;
+    }
+    p {
+      font-size: 16px;
+      margin-top: 12px;
+    }
+  }
+
+  .right {
+    padding: 16px;
+    gap: 14px;
+
+    h2 {
+      font-size: 20px;
+    }
+    .napravlenie {
+      gap: 18px;
+      margin-top: 18px;
+    }
+  }
+
+  .inputWrapper input {
+    padding: 16px 16px 16px 46px;
+    font-size: 16px;
+  }
+  .inputWrapper span {
+    left: 12px;
+    font-size: 18px;
+  }
+
+  .dropdownHeader {
+    padding: 16px;
+    font-size: 16px;
+  }
+  .dropdownList {
+    top: 46px;
+    max-height: 50vh; /* чтобы список не выпадал за экран */
+    border-radius: 0 0 12px 12px;
+  }
+  .dropdownList li {
+    padding: 16px;
+  }
+
+  .lang h2 {
+    font-size: 20px;
+  }
+  .langSwitcher {
+    padding: 4px;
+    gap: 4px;
+  }
+  .langBtn {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .checkbox {
+    align-items: flex-start;
+  }
+  .checkbox span {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .button {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+}
+
+/* ====== узкие телефоны (≤ 420px): ещё компактнее ====== */
+@media (max-width: 420px) {
+  .container {
+    border-width: 8px;
+    border-radius: 24px;
+  }
+
+  .left {
+    padding: 16px 12px;
+    .teacherImage {
+      max-width: 260px;
+    }
+    h1 {
+      font-size: 22px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .right {
+    padding: 12px;
+  }
+
+  .inputWrapper input {
+    padding: 14px 14px 14px 44px;
+    font-size: 15px;
+  }
+  .dropdownHeader {
+    padding: 14px;
+    font-size: 15px;
+  }
+  .dropdownList li {
+    padding: 14px;
+  }
+
+  .langBtn {
+    padding: 8px 12px;
+  }
+
+  .number {
+    width: 70px;
+    height: 70px;
+    font-size: 28px;
+  } /* если где-то используешь */
+}
+
+/* ====== ландшафт/очень маленькие высоты ====== */
+@media (max-height: 560px) and (max-width: 768px) {
+  .left .teacherImage {
+    display: none;
+  } /* прячем персонажа, чтобы форма влезла */
+}
