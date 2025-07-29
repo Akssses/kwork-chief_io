@@ -1,0 +1,256 @@
+$blue: #1c559e;
+$bg: #f5f7fb;
+$border: #eef2f7;
+$text: #0f172a;
+$muted: #6b7280;
+$accent: #ffb020;
+
+.wrapper {
+  min-height: 100vh;
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  max-width: 920px;
+  background: #fff;
+  border: 10px solid #ebf4ff;
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+.body {
+  padding: 26px;
+}
+
+.hero {
+  background: $blue;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  position: relative;
+  padding: 30px 30px 0 30px;
+  overflow: hidden;
+
+  .heroLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .logo {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  .heroTitle {
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+  }
+
+  .heroSubtitle {
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .heroCharacter {
+    width: 190px;
+    height: auto;
+    transform: translateY(8px);
+  }
+}
+
+.sectionTitle {
+  text-align: center;
+  color: $blue;
+  font-weight: 700;
+  margin: 4px 0 18px;
+  font-size: 22px;
+}
+
+.colsHead {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+  font-weight: 700;
+  color: $muted;
+  font-size: 14px;
+
+  span:first-child {
+    justify-self: start;
+  }
+  span:last-child {
+    justify-self: end;
+  }
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  gap: 16px;
+  align-items: center;
+  border-bottom: 1px dashed #0000001a;
+  padding-bottom: 20px;
+}
+
+.leftBar {
+  position: relative;
+  height: 40px;
+  border-radius: 13px;
+  background: #0d294c;
+  border: 1px solid #153a6b;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w);
+  background: linear-gradient(90deg, #245aa0 0%, #113a74 100%);
+  border-radius: inherit;
+}
+
+.leftVal {
+  position: relative;
+  z-index: 1;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.major {
+  color: $text;
+  font-weight: 600;
+  text-align: center;
+}
+
+.rightBar {
+  position: relative;
+  height: 40px;
+  border-radius: 13px;
+  background: #0d294c;
+  border: 1px solid #ffd9a6;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w);
+  background: linear-gradient(90deg, #ffb020 0%, #ff8e00 100%);
+  border-radius: 10px;
+}
+
+.rightVal {
+  position: relative;
+  z-index: 1;
+  font-weight: 900;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.note {
+  margin-top: 18px;
+  color: $text;
+  line-height: 1.6;
+
+  .noteTitle {
+    color: $blue;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+}
+
+.infoBox {
+  margin-top: 18px;
+  background: #fbfbfd;
+  border: 1px solid $border;
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.infoLeft {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.number {
+  width: 80px;
+  height: 80px;
+  border-radius: 999px;
+  background: #fff3e0;
+  color: #ff8e00;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  font-weight: 900;
+  box-shadow: inset 0 0 0 6px #ffcf8a;
+}
+
+.caption {
+  color: $muted;
+  font-weight: 600;
+}
+
+.infoText {
+  color: $text;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .colsHead,
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .colsHead {
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 6px;
+
+    span:first-child {
+      justify-self: start;
+    }
+    span:last-child {
+      justify-self: end;
+    }
+  }
+  .row {
+    gap: 10px;
+  }
+  .leftBar,
+  .rightBar {
+    height: 38px;
+  }
+  .infoBox {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
