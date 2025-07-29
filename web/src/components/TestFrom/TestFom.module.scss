@@ -71,7 +71,7 @@
     font-size: 20px;
 
     p {
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
 
     img {
@@ -128,4 +128,8 @@
   &:hover {
     background-color: #ff8c00;
   }
+}
+
+.emptySmall {
+  margin-top: 20px;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import s from "./ThankYouScreen.module.scss";
 
 export default function ThankYouScreen() {
@@ -18,7 +19,9 @@ export default function ThankYouScreen() {
             <br />
             за честность!
           </h1>
-          <button className={s.button}>Назад на главную</button>
+          <Link href={"/"}>
+            <button className={s.button}>Назад на главную</button>
+          </Link>
         </div>
 
         <div className={s.character}>

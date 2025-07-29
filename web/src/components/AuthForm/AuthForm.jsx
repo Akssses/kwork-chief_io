@@ -6,32 +6,35 @@ import { FaUser } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
-import useSubject from "@/hooks/useSubject"; // проверь путь
+import useSubject from "@/hooks/useSubject";
 
-export default function AuthForm() {
+export default function AuthForm({ onStart }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [direction, setDirection] = useState(""); // title
-  const [directionId, setDirectionId] = useState(null); // id из API
+  const [direction, setDirection] = useState("");
+  const [directionId, setDirectionId] = useState(null);
   const [agree, setAgree] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [testLang, setTestLang] = useState("ru");
 
   const { items: subjectSets, loading, error } = useSubject();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!agree) return alert("Вы должны согласиться с условиями");
+    if (!directionId) return alert("Выберите направление");
 
-    console.log({
+    const payload = {
       name,
       phone,
       email,
       directionId,
       directionTitle: direction,
-    });
+      testLanguage: testLang,
+    };
 
-    // тут дальше твоя отправка на сервер
+    onStart?.(payload);
   };
 
   return (
@@ -108,11 +111,9 @@ export default function AuthForm() {
                     Не удалось загрузить направления
                   </li>
                 )}
-
                 {!error && !loading && subjectSets.length === 0 && (
                   <li className={s.emptyItem}>Пусто</li>
                 )}
-
                 {!error &&
                   !loading &&
                   subjectSets.map((item) => (
@@ -129,6 +130,34 @@ export default function AuthForm() {
                   ))}
               </ul>
             )}
+          </div>
+
+          <div className={s.lang}>
+            <h2>Язык теста:</h2>
+            <div
+              className={s.langSwitcher}
+              role="tablist"
+              aria-label="Выбор языка теста"
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={testLang === "ru"}
+                className={`${s.langBtn} ${testLang === "ru" ? s.active : ""}`}
+                onClick={() => setTestLang("ru")}
+              >
+                RU
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={testLang === "kz"}
+                className={`${s.langBtn} ${testLang === "kz" ? s.active : ""}`}
+                onClick={() => setTestLang("kz")}
+              >
+                KZ
+              </button>
+            </div>
           </div>
 
           <label className={s.checkbox}>

@@ -213,7 +213,7 @@
   border: 1px solid #d9e0ec;
   border-top: none;
   border-radius: 0 0 15px 15px;
-  max-height: 170px;
+  max-height: 230px;
   overflow-y: auto;
   z-index: 10;
 
@@ -226,5 +226,47 @@
       background-color: #ff9e00;
       color: #fff;
     }
+  }
+}
+
+.lang {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1c559e;
+  }
+}
+
+.langSwitcher {
+  display: inline-flex;
+  background: #fff;
+  border: 1px solid #d9e0ec;
+  border-radius: 12px;
+  padding: 6px;
+  gap: 6px;
+  width: fit-content;
+}
+
+.langBtn {
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #1c559e;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  &.active {
+    background: #1c559e;
+    color: #fff;
+  }
+
+  &:hover {
+    background: #ebf4ff;
   }
 }
