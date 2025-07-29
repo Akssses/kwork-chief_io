@@ -1,0 +1,166 @@
+$blue: #1c559e;
+$bg: #f5f7fb;
+$cardBorder: #eaf0f6;
+$text: #0f172a;
+$muted: #6b7280;
+$accent: #ffb020;
+$radius: 40px;
+
+.wrapper {
+  min-height: 100vh;
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 100%;
+  min-height: 90vh;
+  background: #fff;
+  border: 10px solid #ebf4ff;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.hero {
+  background: $blue;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  position: relative;
+  padding: 30px 30px 0 30px;
+  overflow: hidden;
+
+  .heroLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .logo {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  .heroTitle {
+    font-size: 36px;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+  }
+
+  .heroSubtitle {
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  .heroCharacter {
+    width: 190px;
+    height: auto;
+    transform: translateY(8px);
+  }
+}
+
+/* BODY */
+.body {
+  padding: 26px;
+}
+
+.sectionTitle {
+  color: $blue;
+  font-weight: 700;
+  margin: 6px 0 16px;
+  font-size: 22px;
+}
+
+/* White rounded box */
+.whiteBox {
+  background: #fff;
+  border: 1px solid $cardBorder;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
+
+.whiteBoxTitle {
+  color: $blue;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+.whiteBoxText {
+  color: $text;
+  line-height: 1.65;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Alert row */
+.alert {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 6px 6px;
+  border-radius: 16px;
+}
+
+.alertIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: $accent;
+  display: grid;
+  place-items: center;
+
+  svg {
+    width: 28px;
+    height: 28px;
+    fill: #fff;
+  }
+}
+
+.alertText {
+  margin: 6px 0 0;
+  color: $text;
+  line-height: 1.6;
+  font-size: 18px;
+}
+
+@media (max-width: 820px) {
+  .hero {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
+  }
+  .heroCharacter {
+    justify-self: end;
+  }
+}
+
+@media (max-width: 520px) {
+  .heroTitle {
+    font-size: 30px;
+  }
+  .logo {
+    width: 100px;
+  }
+  .alert {
+    grid-template-columns: 44px 1fr;
+  }
+  .alertIcon {
+    width: 44px;
+    height: 44px;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+}

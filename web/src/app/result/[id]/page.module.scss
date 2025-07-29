@@ -1,5 +1,5 @@
 $blue: #1c559e;
-$accent: #ffb020; // оранжевый для процента
+$accent: #ffb020;
 $text: #0f172a;
 $muted: #6b7280;
 $bg: #f5f7fb;
@@ -9,10 +9,11 @@ $radius: 20px;
 .wrapper {
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 20px;
   justify-content: center;
-  padding: 32px 16px;
   box-sizing: border-box;
+  padding: 20px 0;
 }
 
 .card {
@@ -30,13 +31,15 @@ $radius: 20px;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  padding: 28px;
   position: relative;
+  padding: 30px 30px 0 30px;
+  overflow: hidden;
 
   .heroLeft {
     display: flex;
-    gap: 16px;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
   }
 
   .logo {
@@ -120,7 +123,7 @@ $radius: 20px;
 
 .resultBox {
   background: $accent;
-  color: #121212;
+  color: #fff;
   border-radius: $radius;
   padding: 16px 20px;
   display: grid;
@@ -134,8 +137,9 @@ $radius: 20px;
   }
   .resultValue {
     font-weight: 900;
-    font-size: 36px;
+    font-size: 52px;
     line-height: 1;
+    margin-top: 20px;
   }
 
   @media (max-width: 820px) {
@@ -239,4 +243,15 @@ $radius: 20px;
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
   }
+}
+
+.pdf_button {
+  padding: 20px;
+  width: 300px;
+  border-radius: 20px;
+  color: #fff;
+  background: #ffb020;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
 }
