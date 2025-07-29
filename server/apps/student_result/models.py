@@ -21,10 +21,15 @@ class StudentResult(models.Model):
     score_percentage = models.IntegerField("Процент от максимального балла", editable=False)
 
     date_time = models.DateTimeField("Дата и время", default=now)
+    result_url = models.URLField("Ссылка на результат", max_length=300, editable=False, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.score_percentage = round((self.score / 140) * 100)
+        is_new = self.pk is None
         super().save(*args, **kwargs)
+        if is_new:
+            self.result_url = f"http://localhost:3000/result/{self.pk}"
+            super().save(update_fields=['result_url'])
 
     def __str__(self):
         return f"{self.student_name} ({self.parent_name}) - {self.score} баллов"
