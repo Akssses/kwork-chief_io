@@ -7,13 +7,7 @@ import useSubject from "@/hooks/useSubject";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
-const MAX = {
-  history: 15,
-  mathLit: 15,
-  reading: 20,
-  profile: 45,
-  total: 140,
-};
+const MAX = { history: 15, mathLit: 15, reading: 20, profile: 45, total: 140 };
 
 export default function TeslaQuizForm() {
   const {
@@ -24,13 +18,13 @@ export default function TeslaQuizForm() {
 
   // Общие данные
   const [studentName, setStudentName] = useState("");
-  const [parentName, setParentName] = useState(""); // ← NEW
+  const [parentName, setParentName] = useState("");
   const [phone, setPhone] = useState("");
   const [agree, setAgree] = useState(false);
   const [lang] = useState("ru");
 
-  // Направление
-  const [directionTitle, setDirectionTitle] = useState("");
+  // Направление (теперь по ID)
+  const [subjectSetId, setSubjectSetId] = useState(null);
 
   // Баллы
   const [historyScore, setHistoryScore] = useState("");
@@ -43,7 +37,12 @@ export default function TeslaQuizForm() {
   const [submitted, setSubmitted] = useState(false);
   const [errMsg, setErrMsg] = useState("");
 
-  // Профили (только отображение, без выбора)
+  // Выбранный сет и профили
+  const selectedSet = useMemo(
+    () => subjectSets.find((s) => s.id === Number(subjectSetId)) || null,
+    [subjectSets, subjectSetId]
+  );
+  const directionTitle = selectedSet?.title || "";
   const [prof1Name, prof2Name] = useMemo(() => {
     if (!directionTitle) return ["", ""];
     const [p1 = "", p2 = ""] = directionTitle
@@ -53,10 +52,7 @@ export default function TeslaQuizForm() {
   }, [directionTitle]);
 
   // utils
-  const cleanNum = (v) => {
-    const n = Number(v);
-    return Number.isFinite(n) ? n : 0;
-  };
+  const cleanNum = (v) => (Number.isFinite(Number(v)) ? Number(v) : 0);
   const clamp = (v, max) => String(Math.max(0, Math.min(max, Number(v) || 0)));
 
   const total = useMemo(
@@ -71,9 +67,9 @@ export default function TeslaQuizForm() {
 
   const validate = () => {
     if (!studentName.trim()) return "Введите имя ученика";
-    if (!parentName.trim()) return "Введите ФИО родителя"; // ← NEW
+    if (!parentName.trim()) return "Введите ФИО родителя";
     if (!phone.trim()) return "Введите телефон";
-    if (!directionTitle) return "Выберите направление";
+    if (!subjectSetId) return "Выберите направление";
     if (!prof1Name || !prof2Name)
       return "Направление должно содержать два профильных предмета";
     if (!agree) return "Нужно согласиться с условиями";
@@ -102,7 +98,7 @@ export default function TeslaQuizForm() {
     }
 
     const payload = {
-      parent_name: parentName.trim(), // ← NEW
+      parent_name: parentName.trim(),
       student_name: studentName.trim(),
       phone_number: phone.trim(),
       language: lang,
@@ -113,7 +109,11 @@ export default function TeslaQuizForm() {
       profile_subject_1_score: cleanNum(prof1Score),
       profile_subject_2_name: prof2Name,
       profile_subject_2_score: cleanNum(prof2Score),
-      direction: directionTitle,
+      // Главное: отправляем ID subject_set
+      subject_set: Number(subjectSetId),
+      subject_set_id: Number(subjectSetId), // на случай, если бэк ждёт *_id
+      // Можно оставить title для удобства аналитики, но бэку он не обязателен
+      // direction: directionTitle,
       score: total,
     };
 
@@ -139,12 +139,13 @@ export default function TeslaQuizForm() {
     }
   };
 
-  if (submitted)
+  if (submitted) {
     return (
       <div className="container">
         <ThankYouScreen />
       </div>
     );
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -191,7 +192,6 @@ export default function TeslaQuizForm() {
             />
           </div>
 
-          {/* NEW: ФИО родителя */}
           <div className={styles.row}>
             <input
               type="text"
@@ -247,8 +247,10 @@ export default function TeslaQuizForm() {
           <h3>Выбор комбинации профильных предметов</h3>
           <div className={styles.row}>
             <select
-              value={directionTitle}
-              onChange={(e) => setDirectionTitle(e.target.value)}
+              value={subjectSetId ?? ""}
+              onChange={(e) =>
+                setSubjectSetId(e.target.value ? Number(e.target.value) : null)
+              }
             >
               <option value="">
                 {dirsLoading
@@ -261,14 +263,14 @@ export default function TeslaQuizForm() {
               {!dirsLoading &&
                 !dirsError &&
                 subjectSets.map((set) => (
-                  <option key={set.id} value={set.title}>
+                  <option key={set.id} value={set.id}>
                     {set.title}
                   </option>
                 ))}
             </select>
           </div>
 
-          {/* Профильные предметы: названия из направления (readOnly), вводим только баллы */}
+          {/* Профильные предметы из выбранного направления (readOnly), вводим только баллы */}
           <h4>Профильный предмет №1</h4>
           <div className={styles.row}>
             <input
@@ -348,9 +350,9 @@ export default function TeslaQuizForm() {
                     submitting ||
                     !agree ||
                     !studentName.trim() ||
-                    !parentName.trim() || // ← NEW
+                    !parentName.trim() ||
                     !phone.trim() ||
-                    !directionTitle ||
+                    !subjectSetId || // ← без ID не отправляем
                     total > MAX.total
                   }
                 >

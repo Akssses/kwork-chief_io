@@ -5,6 +5,10 @@ import { useParams } from "next/navigation";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import s from "./page.module.scss";
+import GeneralSummary from "@/app/result/characteristic/[id]/page";
+import ConclusionPage from "@/app/result/conclusion/[id]/page";
+import GroupsSummaryPage from "@/app/result/groups/[id]/page";
+import ChancesPage from "@/app/chance/page";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
@@ -19,6 +23,10 @@ const MAX = {
 export default function ResultPage() {
   const { id } = useParams();
   const cardRef = useRef(null);
+  const generalRef = useRef(null);
+  const conclusionRef = useRef(null);
+  const groupsRef = useRef(null);
+  const chancesRef = useRef(null);
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -104,39 +112,34 @@ export default function ResultPage() {
   }, [data]);
 
   const handleDownloadPdf = async () => {
-    if (!cardRef.current) return;
-
-    const node = cardRef.current;
-
-    const canvas = await html2canvas(node, {
-      scale: 2, // четче
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-    });
-
-    const imgData = canvas.toDataURL("image/png");
-
+    const refs = [cardRef, generalRef, conclusionRef, groupsRef, chancesRef];
     const pdf = new jsPDF("p", "mm", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-
-    const imgWidth = pageWidth;
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    let position = 0;
-    let heightLeft = imgHeight;
-
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-
-    while (heightLeft > 0) {
-      pdf.addPage();
-      position = heightLeft - imgHeight; // сдвиг
+    for (let i = 0; i < refs.length; i++) {
+      const ref = refs[i];
+      if (!ref.current) continue;
+      const canvas = await html2canvas(ref.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let position = 0;
+      let heightLeft = imgHeight;
+      if (i > 0) pdf.addPage();
       pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
+      while (heightLeft > 0) {
+        pdf.addPage();
+        position = heightLeft - imgHeight;
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
     }
-
     pdf.save(
       `ENT-result-${(vm?.student_name || "student").replace(/\s+/g, "_")}.pdf`
     );
@@ -286,6 +289,28 @@ export default function ResultPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          left: "-9999px",
+          top: 0,
+          width: "800px",
+        }}
+      >
+        <div ref={generalRef}>
+          <GeneralSummary id={id} />
+        </div>
+        <div ref={conclusionRef}>
+          <ConclusionPage id={id} />
+        </div>
+        <div ref={groupsRef}>
+          <GroupsSummaryPage id={id} />
+        </div>
+        <div ref={chancesRef}>
+          <ChancesPage id={id} />
         </div>
       </div>
 
