@@ -128,11 +128,11 @@ export default function ConclusionPage() {
           </h3>
 
           <div className={`${s.whiteBox} ${s[vm.level]}`}>
-            <div className={s.whiteBoxTitle}>
+            {/* <div className={s.whiteBoxTitle}>
               {vm.level === "low" && "При общем низком результате (<50%)"}
               {vm.level === "mid" && "При общем среднем результате (50–70%)"}
               {vm.level === "high" && "При общем высоком результате (>70%)"}
-            </div>
+            </div> */}
             <p className={s.whiteBoxText}>{conclusionText}</p>
           </div>
         </div>
