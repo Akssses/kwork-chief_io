@@ -50,7 +50,9 @@ export default function ResultPage() {
 
     const {
       student_name = "",
+      // если у тебя ещё где-то используется direction — оставим
       direction = "",
+      subject_set, // может быть объект {id,title,...} или число (id)
       math_literacy_score = 0,
       history_score = 0,
       reading_literacy_score = 0,
@@ -59,7 +61,16 @@ export default function ResultPage() {
       profile_subject_2_name = "",
       profile_subject_2_score = 0,
       score,
+      score_percentage, // бывает в ответе
     } = data;
+
+    // унифицируем subject_set
+    const subjectSetId =
+      typeof subject_set === "number" ? subject_set : subject_set?.id ?? null;
+    const subjectSetTitle =
+      typeof subject_set === "object" && subject_set?.title
+        ? subject_set.title
+        : direction || ""; // на всякий пожарный — падать не будем
 
     const total =
       typeof score === "number"
@@ -70,14 +81,16 @@ export default function ResultPage() {
           (profile_subject_1_score || 0) +
           (profile_subject_2_score || 0);
 
-    const percent = Math.max(
-      0,
-      Math.min(100, Math.round((total / MAX.total) * 100))
-    );
+    const percent =
+      typeof score_percentage === "number"
+        ? Math.max(0, Math.min(100, Math.round(score_percentage)))
+        : Math.max(0, Math.min(100, Math.round((total / MAX.total) * 100)));
 
     return {
       student_name,
-      direction,
+      subject_set: subject_set ?? null, // вернём как есть (объект/число/null)
+      subjectSetId,
+      subjectSetTitle,
       math_literacy_score,
       history_score,
       reading_literacy_score,
@@ -187,7 +200,9 @@ export default function ResultPage() {
           <div className={s.infoRow}>
             <div className={s.infoBox}>
               <span className={s.infoLabel}>Направление:</span>
-              <strong className={s.infoValue}>{vm.direction || "—"}</strong>
+              <strong className={s.infoValue}>
+                {vm.subjectSetTitle || "—"}
+              </strong>
             </div>
             <div className={s.infoBox}>
               <span className={s.infoLabel}>Цель:</span>
