@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils.timezone import now
 
+from ..exam.models import SubjectSet
+
+
 class StudentResult(models.Model):
     parent_name = models.CharField("Имя родителя", max_length=255)
     student_name = models.CharField("Имя ученика", max_length=255)
@@ -16,7 +19,7 @@ class StudentResult(models.Model):
     profile_subject_2_name = models.CharField("Название профильного предмета 2", max_length=100)
     profile_subject_2_score = models.IntegerField("Баллы по профильному предмету 2")
 
-    direction = models.CharField("Направление", max_length=255)
+    subject_set = models.ForeignKey(SubjectSet, verbose_name="Направление", max_length=255, on_delete=models.SET_NULL, null=True)
     score = models.IntegerField("Общий балл")
     score_percentage = models.IntegerField("Процент от максимального балла", editable=False)
 

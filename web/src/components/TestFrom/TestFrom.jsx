@@ -7,9 +7,9 @@ import useQuestions from "@/hooks/useQuestions";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function TestFrom({
-  subjectSetId,
+  subjectSetId, // ← сюда приходит id набора направлений
   lang = "ru",
-  directionTitle,
+  directionTitle, // для вычисления проф. предметов и отображения
   user,
   onFinish,
 }) {
@@ -53,14 +53,19 @@ export default function TestFrom({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!subjectSetId) {
+      alert("Не передан subject_set (ID набора направлений).");
+      return;
+    }
+
     const [prof1 = "", prof2 = ""] = (directionTitle || "").split(/\s*\+\s*/);
 
     const profile_subject_1_score = prof1 ? correctBySubjectTitle(prof1) : 0;
     const profile_subject_2_score = prof2 ? correctBySubjectTitle(prof2) : 0;
 
-    const history_score = scoreByPattern(/истори/i); // "Всемирная история" и т.п.
-    const math_literacy_score = scoreByPattern(/математическ.*грамот/i); // "Математическая грамотность"
-    const reading_literacy_score = scoreByPattern(/читател|reading/i); // "Читательская грамотность"
+    const history_score = scoreByPattern(/истори/i);
+    const math_literacy_score = scoreByPattern(/математическ.*грамот/i);
+    const reading_literacy_score = scoreByPattern(/читател|reading/i);
 
     const score =
       history_score +
@@ -69,6 +74,7 @@ export default function TestFrom({
       profile_subject_1_score +
       profile_subject_2_score;
 
+    // ⬇️ ГЛАВНОЕ ИЗМЕНЕНИЕ: вместо direction отправляем subject_set (ID)
     const payload = {
       parent_name: user?.parentName || "",
       student_name: user?.name || "",
@@ -81,8 +87,9 @@ export default function TestFrom({
       profile_subject_1_score,
       profile_subject_2_name: prof2 || "",
       profile_subject_2_score,
-      direction: directionTitle || "",
+      subject_set: Number(subjectSetId), // ← вот это поле
       score,
+      // direction больше НЕ отправляем
     };
 
     try {
@@ -180,7 +187,7 @@ export default function TestFrom({
         <button
           type="submit"
           className={s.button}
-          disabled={loading || allQuestions.length === 0}
+          disabled={loading || allQuestions.length === 0 || !subjectSetId} // ← блокируем, если нет ID
         >
           Готово
         </button>

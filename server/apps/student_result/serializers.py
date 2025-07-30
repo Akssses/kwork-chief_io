@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import StudentResult
+from ..exam.serializers import SubjectSetSerializer
 
 
 class StudentResultSerializer(serializers.ModelSerializer):
+    subject_set = SubjectSetSerializer(read_only=True)
+
     class Meta:
         model = StudentResult
         fields = "__all__"
