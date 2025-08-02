@@ -15,7 +15,6 @@ export default function ChancesPage() {
 
     const load = async () => {
       try {
-        // 1) Результат по id
         const res1 = await fetch(
           `${API_BASE}/api/v1/student_result/result/${id}`,
           {
@@ -29,7 +28,6 @@ export default function ChancesPage() {
         const score = typeof result?.score === "number" ? result.score : 0;
         if (!subjectSetId || score == null) return;
 
-        // 2) Шансы по subject_set_id + score
         const url = `${API_BASE}/api/v1/profession/admission_chance/?subject_set_id=${subjectSetId}&score=${score}`;
         const res2 = await fetch(url, {
           headers: { Accept: "application/json" },
@@ -37,7 +35,6 @@ export default function ChancesPage() {
         if (!res2.ok) throw new Error(`chance HTTP ${res2.status}`);
         const list = await res2.json();
 
-        // 3) Приводим к rows
         const mapped = Array.isArray(list)
           ? list.map((item) => ({
               left: item?.chance_without_preparation?.percent ?? 0,
@@ -48,7 +45,6 @@ export default function ChancesPage() {
 
         setRows(mapped);
       } catch {
-        // не рендерим ошибок — верстку не трогаем
         setRows([]);
       }
     };
