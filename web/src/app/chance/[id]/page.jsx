@@ -1,18 +1,60 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import s from "./page.module.scss";
 
+const API_BASE = "https://enttest.site";
+
 export default function ChancesPage() {
-  const rows = [
-    { left: 10, name: "Электротехника и энергетика", right: 96 },
-    {
-      left: 5,
-      name: "Стандартизация, сертификация и метрология (по отраслям)",
-      right: 91,
-    },
-    { left: 15, name: "Механика", right: 94 },
-    { left: 15, name: "Коммуникации и коммуникационные технологии", right: 94 },
-  ];
+  const { id } = useParams();
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const load = async () => {
+      try {
+        // 1) Результат по id
+        const res1 = await fetch(
+          `${API_BASE}/api/v1/student_result/result/${id}`,
+          {
+            headers: { Accept: "application/json" },
+          }
+        );
+        if (!res1.ok) throw new Error(`result HTTP ${res1.status}`);
+        const result = await res1.json();
+
+        const subjectSetId = result?.subject_set?.id;
+        const score = typeof result?.score === "number" ? result.score : 0;
+        if (!subjectSetId || score == null) return;
+
+        // 2) Шансы по subject_set_id + score
+        const url = `${API_BASE}/api/v1/profession/admission_chance/?subject_set_id=${subjectSetId}&score=${score}`;
+        const res2 = await fetch(url, {
+          headers: { Accept: "application/json" },
+        });
+        if (!res2.ok) throw new Error(`chance HTTP ${res2.status}`);
+        const list = await res2.json();
+
+        // 3) Приводим к rows
+        const mapped = Array.isArray(list)
+          ? list.map((item) => ({
+              left: item?.chance_without_preparation?.percent ?? 0,
+              name: item?.profession ?? "",
+              right: item?.chance_with_preparation?.percent ?? 0,
+            }))
+          : [];
+
+        setRows(mapped);
+      } catch {
+        // не рендерим ошибок — верстку не трогаем
+        setRows([]);
+      }
+    };
+
+    load();
+  }, [id]);
 
   return (
     <section className={s.wrapper}>
@@ -40,7 +82,7 @@ export default function ChancesPage() {
 
         <div className={s.body}>
           <h3 className={s.sectionTitle}>
-            Возможность поступить в выбранные специальности
+            Возможность поступить в выбранные специальныести
           </h3>
 
           <div className={s.colsHead}>

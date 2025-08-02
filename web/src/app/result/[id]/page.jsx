@@ -8,7 +8,7 @@ import s from "./page.module.scss";
 import GeneralSummary from "@/app/result/characteristic/[id]/page";
 import ConclusionPage from "@/app/result/conclusion/[id]/page";
 import GroupsSummaryPage from "@/app/result/groups/[id]/page";
-import ChancesPage from "@/app/chance/page";
+import ChancesPage from "@/app/chance/[id]/page";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
