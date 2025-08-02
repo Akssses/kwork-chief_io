@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import s from "./TestFom.module.scss";
 import useQuestions from "@/hooks/useQuestions";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
 export default function TestFrom({
   subjectSetId, // ← сюда приходит id набора направлений

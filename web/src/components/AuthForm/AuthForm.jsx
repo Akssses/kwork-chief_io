@@ -18,6 +18,42 @@ export default function AuthForm({ onStart = () => {} }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [testLang, setTestLang] = useState("ru");
 
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value;
+    setPhone(value);
+
+    const isValid = isValidKZPhone(value);
+    setIsPhoneValid(isValid || value.trim() === ""); // не показываем ошибку, если пусто
+  };
+
+  // Удаляем все символы кроме цифр
+  const digitsOnly = (v) => v.replace(/\D/g, "");
+
+  // Нормализуем номер под формат 7XXXXXXXXXX
+  const normalizeKZ = (input) => {
+    const d = digitsOnly(input);
+    if (d.length === 11 && d[0] === "8") return "7" + d.slice(1);
+    return d;
+  };
+
+  // Проверка: 11 цифр, первая 7, вторая обязательно 7 (Казахстан)
+  const isValidKZPhone = (input) => {
+    const n = normalizeKZ(input);
+    return n.length === 11 && n[0] === "7" && n[1] === "7";
+  };
+
+  // Можно использовать позже — форматированный вывод +7 7XX XXX-XX-XX
+  const formatKZ = (input) => {
+    const n = normalizeKZ(input);
+    if (n.length !== 11) return input;
+    return `+7 ${n.slice(1, 4)} ${n.slice(4, 7)}-${n.slice(7, 9)}-${n.slice(
+      9,
+      11
+    )}`;
+  };
+
   const { items: subjectSets, loading, error } = useSubject();
 
   const handleSubmit = (e) => {
@@ -69,12 +105,19 @@ export default function AuthForm({ onStart = () => {} }) {
             </span>
             <input
               type="tel"
-              placeholder="Ваш телефон"
+              placeholder="+7 7XX XXX-XX-XX"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={handlePhoneChange}
+              inputMode="tel"
+              className={!isPhoneValid ? s.invalidInput : ""}
               required
             />
           </div>
+          {!isPhoneValid && (
+            <div className={s.errorText}>
+              Введите корректный номер КЗ (+7 7XX XXX-XX-XX)
+            </div>
+          )}
 
           <div className={s.inputWrapper}>
             <span>

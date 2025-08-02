@@ -10,7 +10,7 @@ import ConclusionPage from "@/app/result/conclusion/[id]/page";
 import GroupsSummaryPage from "@/app/result/groups/[id]/page";
 import ChancesPage from "@/app/chance/page";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
 const MAX = {
   math_lit: 15,
