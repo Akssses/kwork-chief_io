@@ -25,26 +25,22 @@ export default function AuthForm({ onStart = () => {} }) {
     setPhone(value);
 
     const isValid = isValidKZPhone(value);
-    setIsPhoneValid(isValid || value.trim() === ""); // не показываем ошибку, если пусто
+    setIsPhoneValid(isValid || value.trim() === "");
   };
 
-  // Удаляем все символы кроме цифр
   const digitsOnly = (v) => v.replace(/\D/g, "");
 
-  // Нормализуем номер под формат 7XXXXXXXXXX
   const normalizeKZ = (input) => {
     const d = digitsOnly(input);
     if (d.length === 11 && d[0] === "8") return "7" + d.slice(1);
     return d;
   };
 
-  // Проверка: 11 цифр, первая 7, вторая обязательно 7 (Казахстан)
   const isValidKZPhone = (input) => {
     const n = normalizeKZ(input);
     return n.length === 11 && n[0] === "7" && n[1] === "7";
   };
 
-  // Можно использовать позже — форматированный вывод +7 7XX XXX-XX-XX
   const formatKZ = (input) => {
     const n = normalizeKZ(input);
     if (n.length !== 11) return input;
