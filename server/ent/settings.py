@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['enttest.site', 'www.enttest.site', '176.124.210.145']
 
 CSRF_TRUSTED_ORIGINS = [
     "http://176.124.210.145:8080",
+    "https://enttest.site"
 ]
 
 
