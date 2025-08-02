@@ -31,7 +31,7 @@ class StudentResult(models.Model):
         is_new = self.pk is None
         super().save(*args, **kwargs)
         if is_new:
-            self.result_url = f"http://localhost:3000/result/{self.pk}"
+            self.result_url = f"https://kwork-chief-io.vercel.app/result/{self.pk}"
             super().save(update_fields=['result_url'])
 
     def __str__(self):
