@@ -25,11 +25,16 @@ class Answer(models.Model):
         blank=True,
         null=True
     )
-    is_correct = models.BooleanField(
-        verbose_name=_("Правильный ответ"),
+    is_correct_ru = models.BooleanField(
+        verbose_name=_("Правильный ответ (рус)"),
         default=False
     )
-    question = models.ForeignKey(Question,
+    is_correct_kz = models.BooleanField(
+        verbose_name=_("Дұрыс жауап (қаз)"),
+        default=False
+    )
+    question = models.ForeignKey(
+        Question,
         on_delete=models.CASCADE,
         related_name='answers',
         verbose_name=_("Вопрос")
@@ -41,4 +46,4 @@ class Answer(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return self.answer_ru[:50] + "..."
+        return (self.answer_ru or self.answer_kz or "Ответ")[0:50] + "..."

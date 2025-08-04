@@ -9,6 +9,7 @@ from ..subjects.models import Subjects
 class AnswerSerializer(serializers.ModelSerializer):
     text = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
+    is_correct = serializers.SerializerMethodField()
 
     class Meta:
         model = Answer
@@ -22,6 +23,10 @@ class AnswerSerializer(serializers.ModelSerializer):
         lang = self.context.get('lang', 'ru')
         image = getattr(obj, f'answer_image_{lang}', None)
         return image.url if image else None
+
+    def get_is_correct(self, obj):
+        lang = self.context.get('lang', 'ru')
+        return getattr(obj, f'is_correct_{lang}', False)
 
 
 class QuestionWithAnswersSerializer(serializers.ModelSerializer):
