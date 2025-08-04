@@ -27,7 +27,7 @@ export default function ResultPage() {
   const conclusionRef = useRef(null);
   const groupsRef = useRef(null);
   const chancesRef = useRef(null);
-
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -58,7 +58,6 @@ export default function ResultPage() {
 
     const {
       student_name = "",
-      // если у тебя ещё где-то используется direction — оставим
       direction = "",
       subject_set, // может быть объект {id,title,...} или число (id)
       math_literacy_score = 0,
@@ -72,7 +71,6 @@ export default function ResultPage() {
       score_percentage, // бывает в ответе
     } = data;
 
-    // унифицируем subject_set
     const subjectSetId =
       typeof subject_set === "number" ? subject_set : subject_set?.id ?? null;
     const subjectSetTitle =
@@ -112,37 +110,52 @@ export default function ResultPage() {
   }, [data]);
 
   const handleDownloadPdf = async () => {
-    const refs = [cardRef, generalRef, conclusionRef, groupsRef, chancesRef];
-    const pdf = new jsPDF("p", "mm", "a4");
-    for (let i = 0; i < refs.length; i++) {
-      const ref = refs[i];
-      if (!ref.current) continue;
-      const canvas = await html2canvas(ref.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pageWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let position = 0;
-      let heightLeft = imgHeight;
-      if (i > 0) pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-      while (heightLeft > 0) {
-        pdf.addPage();
-        position = heightLeft - imgHeight;
+    if (isGeneratingPdf) return; // на всякий случай
+    setIsGeneratingPdf(true);
+
+    try {
+      const refs = [cardRef, generalRef, conclusionRef, groupsRef, chancesRef];
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      for (let i = 0; i < refs.length; i++) {
+        const ref = refs[i];
+        if (!ref.current) continue;
+
+        const canvas = await html2canvas(ref.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let position = 0;
+        let heightLeft = imgHeight;
+
+        if (i > 0) pdf.addPage();
         pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
+
+        while (heightLeft > 0) {
+          pdf.addPage();
+          position = heightLeft - imgHeight;
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
       }
+
+      pdf.save(
+        `ENT-result-${(vm?.student_name || "student").replace(/\s+/g, "_")}.pdf`
+      );
+    } catch (e) {
+      console.error("PDF generation failed", e);
+    } finally {
+      setIsGeneratingPdf(false);
     }
-    pdf.save(
-      `ENT-result-${(vm?.student_name || "student").replace(/\s+/g, "_")}.pdf`
-    );
   };
 
   if (loading) {
@@ -314,9 +327,12 @@ export default function ResultPage() {
         </div>
       </div>
 
-      {/* Кнопка скачивания PDF */}
-      <button className={s.pdf_button} onClick={handleDownloadPdf}>
-        Скачать PDF
+      <button
+        className={s.pdf_button}
+        onClick={handleDownloadPdf}
+        disabled={isGeneratingPdf}
+      >
+        {isGeneratingPdf ? "Сохраняем PDF..." : "Скачать PDF"}
       </button>
     </section>
   );

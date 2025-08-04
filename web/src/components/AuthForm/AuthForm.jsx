@@ -7,6 +7,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { HiUsers } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import useSubject from "@/hooks/useSubject";
+import Link from "next/link";
 
 export default function AuthForm({ onStart = () => {} }) {
   const [studentName, setStudentName] = useState("");
@@ -215,6 +216,7 @@ export default function AuthForm({ onStart = () => {} }) {
         <button type="submit" className={s.button} disabled={loading}>
           Приступить
         </button>
+        <Link href={"/tesla-quiz"}>Я уже сдал тестирование</Link>
       </form>
     </div>
   );
