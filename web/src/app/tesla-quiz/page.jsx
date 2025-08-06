@@ -7,7 +7,7 @@ import useSubject from "@/hooks/useSubject";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
-const MAX = { history: 15, mathLit: 15, reading: 20, profile: 45, total: 140 };
+const MAX = { history: 20, mathLit: 10, reading: 10, profile: 50, total: 140 };
 
 export default function TeslaQuizForm() {
   const {

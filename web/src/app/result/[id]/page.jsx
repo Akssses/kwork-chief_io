@@ -13,10 +13,10 @@ import ChancesPage from "@/app/chance/[id]/page";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
 const MAX = {
-  math_lit: 15,
-  history: 15,
-  reading: 20,
-  profile: 45,
+  math_lit: 10,
+  history: 20,
+  reading: 10,
+  profile: 50,
   total: 140,
 };
 

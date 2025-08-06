@@ -157,7 +157,10 @@ export default function TestFrom({
                         }}
                       />
                       {q.image && (
-                        <img src={q.image} alt="Иллюстрация к вопросу" />
+                        <img
+                          src={`https://enttest.site${q.image}`}
+                          alt="Иллюстрация к вопросу"
+                        />
                       )}
                     </div>
 
@@ -171,7 +174,10 @@ export default function TestFrom({
                             onChange={() => handleChoose(q.id, a.id)}
                           />
                           {a.image ? (
-                            <img src={a.image} alt="Вариант ответа" />
+                            <img
+                              src={`https://enttest.site${a.image}`}
+                              alt="Вариант ответа"
+                            />
                           ) : (
                             <span className={s.answerText}>{a.text}</span>
                           )}
