@@ -7,10 +7,11 @@ import s from "./page.module.scss";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
 const MAX = {
-  math_lit: 15,
-  history: 15,
-  reading: 20,
-  profile: 45,
+  math_lit: 10,
+  history: 20,
+  reading: 10,
+  profile: 50,
+  total: 140,
 };
 
 const pct = (score, max) =>
@@ -153,11 +154,7 @@ export default function GeneralSummary() {
         {/* HERO */}
         <div className={s.hero}>
           <div className={s.heroLeft}>
-            <img
-              className={s.logo}
-              src="/assets/icons/logo.svg"
-              alt="Tesla Education"
-            />
+            <img className={s.logo} src="/assets/icons/logo.png" alt="Jiyrma" />
             <div>
               <h1 className={s.heroTitle}>Brain test</h1>
               <p className={s.heroSubtitle}>

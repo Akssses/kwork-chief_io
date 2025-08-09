@@ -159,9 +159,9 @@ export default function TeslaQuizForm() {
       <div className={styles.card}>
         <div className={styles.header}>
           <div className={styles.titleBlock}>
-            <img src="/assets/icons/logo.svg" alt="Tesla Education" />
+            <img src="/assets/icons/logo.png" alt="Jiyrma" />
             <h1>
-              Привет, вы попали в систему <br /> Tesla Education Quiz
+              Привет, вы попали в систему <br /> Jiyrma
             </h1>
             <p>Коротко о правилах - Не знаете ответа, не отвечайте! :)</p>
           </div>

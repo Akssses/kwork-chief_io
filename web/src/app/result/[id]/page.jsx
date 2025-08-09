@@ -184,11 +184,7 @@ export default function ResultPage() {
         {/* HERO */}
         <div className={s.hero}>
           <div className={s.heroLeft}>
-            <img
-              className={s.logo}
-              src="/assets/icons/logo.svg"
-              alt="Tesla Education"
-            />
+            <img className={s.logo} src="/assets/icons/logo.png" alt="Jiyrma" />
             <div>
               <h1 className={s.heroTitle}>Brain test</h1>
               <p className={s.heroSubtitle}>

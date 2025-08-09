@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import s from "./TestFom.module.scss";
 import useQuestions from "@/hooks/useQuestions";
 
@@ -14,11 +14,50 @@ export default function TestFrom({
   onFinish,
 }) {
   const {
-    data: subjects,
+    data: subjects = [],
     loading,
     error,
   } = useQuestions({ subjectSetId, lang });
-  const [chosen, setChosen] = useState({});
+
+  // Ключ для хранения выбранных ответов зависит от subjectSetId
+  const chosenKey = useMemo(
+    () =>
+      subjectSetId ? `quiz-chosen-${subjectSetId}` : `quiz-chosen-unknown`,
+    [subjectSetId]
+  );
+
+  // Флаг, чтобы понять, что мы уже загрузили "chosen" из LS и можно безопасно сохранять изменения
+  const loadedChosenRef = useRef(false);
+
+  // 1) Инициализация выбранных ответов из localStorage
+  const [chosen, setChosen] = useState(() => {
+    try {
+      const raw =
+        typeof window !== "undefined" ? localStorage.getItem(chosenKey) : null;
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  });
+
+  // 2) Если subjectSetId поменялся — перезагрузим ответы для нового набора
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(chosenKey);
+      setChosen(raw ? JSON.parse(raw) : {});
+    } catch {
+      setChosen({});
+    }
+    loadedChosenRef.current = true;
+  }, [chosenKey]);
+
+  // 3) Сохраняем выбранные ответы при изменениях
+  useEffect(() => {
+    if (!loadedChosenRef.current) return;
+    try {
+      localStorage.setItem(chosenKey, JSON.stringify(chosen));
+    } catch (_) {}
+  }, [chosen, chosenKey]);
 
   const allQuestions = useMemo(
     () => subjects.flatMap((s) => s.questions || []),
@@ -74,7 +113,7 @@ export default function TestFrom({
       profile_subject_1_score +
       profile_subject_2_score;
 
-    // ⬇️ ГЛАВНОЕ ИЗМЕНЕНИЕ: вместо direction отправляем subject_set (ID)
+    // ⬇️ Отправляем subject_set
     const payload = {
       parent_name: user?.parentName || "",
       student_name: user?.name || "",
@@ -87,9 +126,8 @@ export default function TestFrom({
       profile_subject_1_score,
       profile_subject_2_name: prof2 || "",
       profile_subject_2_score,
-      subject_set: Number(subjectSetId), // ← вот это поле
+      subject_set: Number(subjectSetId),
       score,
-      // direction больше НЕ отправляем
     };
 
     try {
@@ -108,6 +146,12 @@ export default function TestFrom({
       }
 
       console.log("RESULT SENT:", payload);
+
+      // После успешной отправки — подчистим выбранные ответы для этого набора
+      try {
+        localStorage.removeItem(chosenKey);
+      } catch (_) {}
+
       onFinish?.(payload);
     } catch (err) {
       alert(`Не удалось отправить результат: ${err.message}`);
@@ -118,11 +162,11 @@ export default function TestFrom({
   return (
     <div className={s.container}>
       <div className={s.left}>
-        <img className={s.logo} src="/assets/icons/logo.svg" alt="" />
+        <img className={s.logo} src="/assets/icons/logo.png" alt="" />
         <div className={s.teacherImage}>
           <img src="/assets/images/teacher2.png" alt="" />
         </div>
-        <h1>Привет, вы попали в систему Tesla Education Quiz</h1>
+        <h1>Привет, вы попали в систему Jiyrma</h1>
         <p>Коротко о правилах – Не знаете ответа, не отвечайте! :)</p>
       </div>
 
@@ -193,7 +237,7 @@ export default function TestFrom({
         <button
           type="submit"
           className={s.button}
-          disabled={loading || allQuestions.length === 0 || !subjectSetId} // ← блокируем, если нет ID
+          disabled={loading || allQuestions.length === 0 || !subjectSetId}
         >
           Готово
         </button>

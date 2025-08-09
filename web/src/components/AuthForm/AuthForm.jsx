@@ -71,11 +71,11 @@ export default function AuthForm({ onStart = () => {} }) {
   return (
     <div className={s.container}>
       <div className={s.left}>
-        <img className={s.logo} src="/assets/icons/logo.svg" alt="" />
+        <img className={s.logo} src="/assets/icons/logo.png" alt="" />
         <div className={s.teacherImage}>
           <img src="/assets/images/teacher1.png" alt="" />
         </div>
-        <h1>Привет, вы попали в систему Tesla Education Quiz</h1>
+        <h1>Привет, вы попали в систему Jiyrma</h1>
         <p>Коротко о правилах – Не знаете ответа, не отвечайте! :)</p>
       </div>
 
@@ -216,7 +216,7 @@ export default function AuthForm({ onStart = () => {} }) {
         <button type="submit" className={s.button} disabled={loading}>
           Приступить
         </button>
-        <Link href={"/tesla-quiz"}>Я уже сдал тестирование</Link>
+        <Link href={"/jiyrma-quiz"}>Я уже сдал тестирование</Link>
       </form>
     </div>
   );

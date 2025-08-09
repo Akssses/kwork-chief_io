@@ -8,11 +8,12 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
 
 // Максимальные баллы
 const MAX = {
-  reading: 20, // Грамотность чтения
-  math_lit: 15, // Математическая грамотность
-  history: 15, // История Казахстана
-  profile: 45, // каждый профильный
+  reading: 10, // Грамотность чтения
+  math_lit: 10, // Математическая грамотность
+  history: 20, // История Казахстана
+  profile: 50, // каждый профильный
 };
+
 const GENERAL_MAX = MAX.reading + MAX.math_lit + MAX.history; // 50
 const PROFILE_MAX = MAX.profile * 2; // 90
 
@@ -138,11 +139,7 @@ export default function GroupsSummaryPage() {
       <div className={s.card}>
         <div className={s.hero}>
           <div className={s.heroLeft}>
-            <img
-              className={s.logo}
-              src="/assets/icons/logo.svg"
-              alt="Tesla Education"
-            />
+            <img className={s.logo} src="/assets/icons/logo.png" alt="Jiyrma" />
             <div>
               <h1 className={s.heroTitle}>Brain test</h1>
               <p className={s.heroSubtitle}>

@@ -1,19 +1,16 @@
 "use client";
 
+import { useCallback } from "react";
 import s from "./ThankYouScreen.module.scss";
 
-export default function ThankYouScreen() {
-  const handleBack = () => {
-    window.location.href = "/";
-  };
+export default function ThankYouScreen({ onRestart }) {
+  const handleBack = useCallback(() => {
+    onRestart?.();
+  }, [onRestart]);
 
   return (
     <div className={s.card}>
-      <img
-        src="/assets/icons/logo.svg"
-        className={s.logo}
-        alt="Tesla Education"
-      />
+      <img src="/assets/icons/logo.png" className={s.logo} alt="Jiyrma" />
 
       <div className={s.content}>
         <div className={s.textBlock}>
