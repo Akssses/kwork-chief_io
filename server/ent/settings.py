@@ -26,11 +26,12 @@ SECRET_KEY = 'django-insecure-4e%+rmqtj8(1l4(#v8#bl$+(r$u!!(h09+xi3y&3()h(si^z=4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['enttest.site', 'www.enttest.site', '176.124.210.145', '127.0.0.1']
+ALLOWED_HOSTS = ['enttest.site', 'www.enttest.site', '176.124.210.145', '127.0.0.1', 'admin.jiyrma-gt.kz']
 
 CSRF_TRUSTED_ORIGINS = [
     "http://176.124.210.145:8080",
-    "https://enttest.site"
+    "https://enttest.site",
+    "https://admin.jiyrma-gt.kz"
 ]
 
 
