@@ -31,8 +31,11 @@ ALLOWED_HOSTS = ['enttest.site', 'www.enttest.site', '176.124.210.145', '127.0.0
 CSRF_TRUSTED_ORIGINS = [
     "http://176.124.210.145:8080",
     "https://enttest.site",
-    "https://admin.jiyrma-gt.kz"
+    "https://admin.jiyrma-gt.kz",
+    "https://www.jiyrma-gt.kz",
+    "https://jiyrma-gt.kz",
 ]
+
 
 
 # Application definition
