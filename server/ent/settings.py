@@ -75,7 +75,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
-    "https://kwork-chief-io.vercel.app"
+    "https://kwork-chief-io.vercel.app",
+    "https://jiyrma-gt.kz"
 ]
 CORS_ALLOW_METHODS = (
     "DELETE",
