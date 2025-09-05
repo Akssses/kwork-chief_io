@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import s from "./TestFom.module.scss";
 import useQuestions from "@/hooks/useQuestions";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 
 export default function TestFrom({
   subjectSetId, // ← сюда приходит id набора направлений
@@ -202,7 +203,7 @@ export default function TestFrom({
                       />
                       {q.image && (
                         <img
-                          src={`https://enttest.site${q.image}`}
+                          src={`https://admin.jiyrma-gt.kz${q.image}`}
                           alt="Иллюстрация к вопросу"
                         />
                       )}
@@ -219,7 +220,7 @@ export default function TestFrom({
                           />
                           {a.image ? (
                             <img
-                              src={`https://enttest.site${a.image}`}
+                              src={`https://admin.jiyrma-gt.kz${a.image}`}
                               alt="Вариант ответа"
                             />
                           ) : (

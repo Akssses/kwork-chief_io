@@ -5,7 +5,8 @@ import styles from "@/styles/TeslaQuizForm.module.scss";
 import ThankYouScreen from "@/components/ThankYouScreen/ThankYouScreen";
 import useSubject from "@/hooks/useSubject";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 
 const MAX = { history: 20, mathLit: 10, reading: 10, profile: 50, total: 140 };
 

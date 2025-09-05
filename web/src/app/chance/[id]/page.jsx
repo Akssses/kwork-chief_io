@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import s from "./page.module.scss";
 
-const API_BASE = "https://enttest.site";
+const API_BASE = "https://admin.jiyrma-gt.kz";
 
 export default function ChancesPage() {
   const { id } = useParams();

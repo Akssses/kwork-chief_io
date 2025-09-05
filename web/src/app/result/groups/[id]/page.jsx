@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import s from "./page.module.scss";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 
 // Максимальные баллы
 const MAX = {

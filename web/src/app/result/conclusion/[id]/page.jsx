@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import s from "./page.module.scss";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 const MAX_TOTAL = 140;
 
 const clampPct = (n) => Math.max(0, Math.min(100, Math.round(n)));

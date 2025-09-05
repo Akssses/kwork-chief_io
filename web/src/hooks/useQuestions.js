@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 
 export default function useQuestions({ subjectSetId, lang = "ru" }) {
   const [data, setData] = useState([]); // [{id,title,type,subject_type,questions:[...]}]

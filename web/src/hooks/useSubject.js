@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://enttest.site";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "https://admin.jiyrma-gt.kz";
 
 export default function useSubject() {
   const [items, setItems] = useState([]);
